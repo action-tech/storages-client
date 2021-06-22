@@ -1,0 +1,46 @@
+---
+version: '3.5'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: build/docker/app/Dockerfile
+      target: local
+    volumes:
+      - .:/var/www:cached
+    working_dir: /var/www
+    # Переопределили для того, чтобы контейнер не висел как демон
+    command: 'sh'
+    environment:
+      - ENVIRONMENT=test
+      - COMPOSER_MEMORY_LIMIT=-1
+      - PHP_IDE_CONFIG=serverName=testbuilding
+      - PHP_DISPLAY_ERRORS=1
+      - PHP_ERROR_REPORTING=32767
+      - PHP_XDEBUG_REMOTE_HOST=${PHP_XDEBUG_REMOTE_HOST}
+  test:
+    build:
+      context: .
+      dockerfile: build/docker/app/Dockerfile
+      target: local
+    volumes:
+      - .:/var/www:cached
+    working_dir: /var/www
+    # Переопределили для того, чтобы контейнер не висел как демон
+    command: 'sh'
+    environment:
+      - ENVIRONMENT=test
+      - COMPOSER_MEMORY_LIMIT=-1
+      - PHP_IDE_CONFIG=serverName=testbuilding
+      - PHP_DISPLAY_ERRORS=1
+      - PHP_ERROR_REPORTING=32767
+      - PHP_XDEBUG_REMOTE_HOST=${PHP_XDEBUG_REMOTE_HOST}
+
+  linter:
+    build:
+      context: build/docker/linter
+      dockerfile: Dockerfile
+    volumes:
+      - .:/var/www:cached
+    working_dir: /var/www
