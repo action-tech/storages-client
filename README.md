@@ -31,6 +31,3 @@ use GuzzleHttp\Client;
 $client = new StoragesClient(new Client(), 'https://api.action-media.ru');
 $userAccess = $client->getUserAccess('token');
 ```
-
-### Документация
-https://conf.action-media.ru/pages/viewpage.action?pageId=233315120
